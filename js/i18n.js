@@ -60,6 +60,14 @@ const translations = {
       title: "Proyectos",
       description: "Una muestra de los proyectos en los que trabajamos. Este espacio crece con cada solución que construimos."
     },
+    clients: {
+      eyebrow: "Nuestros clientes",
+      titleLine1: "Personas y negocios que",
+      titleLine2: "confían en nosotros.",
+      description: "Construimos soluciones pensando en las necesidades reales de cada cliente, desde pequeñas iniciativas hasta proyectos digitales.",
+      visitSite: "Visitar sitio",
+      visitSiteAria: "Visitar sitio web de"
+    },
     contact: {
       eyebrow: "Contacto",
       title: "Cuéntanos qué necesitas resolver",
@@ -142,6 +150,14 @@ const translations = {
       title: "Projects",
       description: "A sample of the projects we work on. This space grows with every solution we build."
     },
+    clients: {
+      eyebrow: "Our clients",
+      titleLine1: "People and businesses that",
+      titleLine2: "trust us.",
+      description: "We build solutions around the real needs of each client, from small initiatives to digital projects.",
+      visitSite: "Visit site",
+      visitSiteAria: "Visit website of"
+    },
     contact: {
       eyebrow: "Contact",
       title: "Tell us what you need to solve",
@@ -167,10 +183,12 @@ const translations = {
 
 function initPreferences() {
   const savedTheme = getStoredPreference("axs-theme", "dark");
+  const savedLanguage = getStoredPreference("axs-language", "es");
+  const language = savedLanguage === "en" ? "en" : "es";
 
-  applyLanguage("es");
+  applyLanguage(language);
   applyTheme(savedTheme);
-  initLanguageToggle("es");
+  initLanguageToggle(language);
   initThemeToggle(savedTheme);
 }
 
@@ -183,32 +201,36 @@ function getCurrentLanguage() {
 }
 
 function applyLanguage(language) {
-  document.documentElement.lang = language;
-  document.title = translate("ui.title", language);
-  setMetaContent('meta[name="description"]', translate("ui.description", language));
-  setMetaContent('meta[property="og:title"]', translate("ui.title", language));
-  setMetaContent('meta[property="og:description"]', translate("ui.description", language));
+  const selectedLanguage = language === "en" ? "en" : "es";
+
+  document.documentElement.lang = selectedLanguage;
+  document.title = translate("ui.title", selectedLanguage);
+  setMetaContent('meta[name="description"]', translate("ui.description", selectedLanguage));
+  setMetaContent('meta[property="og:title"]', translate("ui.title", selectedLanguage));
+  setMetaContent('meta[property="og:description"]', translate("ui.description", selectedLanguage));
 
   document.querySelectorAll("[data-i18n]").forEach((element) => {
-    element.textContent = translate(element.dataset.i18n, language);
+    element.textContent = translate(element.dataset.i18n, selectedLanguage);
   });
 
   document.querySelectorAll("[data-i18n-html]").forEach((element) => {
-    element.innerHTML = translate(element.dataset.i18nHtml, language);
+    element.innerHTML = translate(element.dataset.i18nHtml, selectedLanguage);
   });
 
   const toggle = document.getElementById("language-toggle");
   if (toggle) {
-    const isEnglish = language === "en";
+    const isEnglish = selectedLanguage === "en";
     toggle.setAttribute("aria-pressed", String(isEnglish));
-    toggle.setAttribute("aria-label", translate("ui.languageToggle", language));
+    toggle.setAttribute("aria-label", translate("ui.languageToggle", selectedLanguage));
     const value = toggle.querySelector(".rail-toggle__value");
-    if (value) value.textContent = language.toUpperCase();
+    if (value) value.textContent = selectedLanguage.toUpperCase();
   }
 
-  updateAccessibleLabels(language);
+  updateAccessibleLabels(selectedLanguage);
 
-  document.dispatchEvent(new CustomEvent("languagechange", { detail: { language } }));
+  setStoredPreference("axs-language", selectedLanguage);
+
+  document.dispatchEvent(new CustomEvent("languagechange", { detail: { language: selectedLanguage } }));
 }
 
 function applyTheme(theme) {
