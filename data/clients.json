@@ -4,5 +4,11 @@
     "logoDark": "assets/images/clients/cced/LOGO-CCED-DARK.png",
     "logoLight": "assets/images/clients/cced/LOGO-CCED-LIGHT.png",
     "website": "https://cced-ivory.vercel.app"
+  },
+  {
+    "name": "Arias LPL",
+    "logoDark": "assets/images/clients/ariaslpl/LOGO-ARIAS-DARK.png",
+    "logoLight": "assets/images/clients/ariaslpl/LOGO-ARIAS-LIGHT.png",
+    "website": "https://ariaslpl.vercel.app/"
   }
 ]
